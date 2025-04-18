@@ -17,7 +17,7 @@ import {
   getPointsByRole,
   canManagePoints,
 } from "../../../../lib/discord/points"
-import { getXpConfig, updateXpConfig, getUserVoiceStats, getUserMediaStats } from "../../../../lib/discord/commands"
+import { getXpConfig, updateXpConfig, getUserVoiceStats, getUserMediaStats } from "../../../../bot/discord/commands"
 
 // Interaction type constants
 const PING = 1

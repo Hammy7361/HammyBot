@@ -1,46 +1,51 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useRouter } from "next/navigation"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 
 export default function ServersPage() {
   const router = useRouter()
-  const searchParams = useSearchParams()
   const [user, setUser] = useState(null)
   const [servers, setServers] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    try {
-      // Get user data from URL
-      const userParam = searchParams.get("user")
-      const guildsParam = searchParams.get("guilds")
+    async function fetchData() {
+      try {
+        // Check if user is authenticated
+        const authResponse = await fetch("/api/auth/check")
+        const authData = await authResponse.json()
 
-      if (userParam && guildsParam) {
-        const userData = JSON.parse(userParam)
-        const guildsData = JSON.parse(guildsParam)
+        if (!authData.authenticated) {
+          router.push("/dashboard/login")
+          return
+        }
 
-        console.log("User data loaded from URL:", userData.username)
-        console.log(`Loaded ${guildsData.length} servers from URL`)
+        setUser(authData.user)
 
-        setUser(userData)
-        setServers(guildsData)
-      } else {
-        console.error("Missing user or guilds data in URL")
-        setError("Missing authentication data. Please log in again.")
-        // Don't redirect here, just show an error
+        // Fetch servers
+        const serversResponse = await fetch("/api/discord/servers")
+
+        if (!serversResponse.ok) {
+          throw new Error("Failed to fetch servers")
+        }
+
+        const serversData = await serversResponse.json()
+        setServers(serversData)
+      } catch (err) {
+        console.error("Error fetching data:", err)
+        setError(err.message || "Failed to load data")
+      } finally {
+        setLoading(false)
       }
-    } catch (error) {
-      console.error("Error parsing URL data:", error)
-      setError(`Error loading data: ${error.message}`)
-    } finally {
-      setLoading(false)
     }
-  }, [searchParams])
+
+    fetchData()
+  }, [router])
 
   const handleServerClick = (serverId) => {
     router.push(`/dashboard/server/${serverId}`)
@@ -53,7 +58,8 @@ export default function ServersPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <p>Loading your servers...</p>
+        <div className="w-16 h-16 border-t-4 border-blue-500 border-solid rounded-full animate-spin"></div>
+        <p className="ml-4">Loading your servers...</p>
       </div>
     )
   }
@@ -128,4 +134,3 @@ export default function ServersPage() {
     </div>
   )
 }
-

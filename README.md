@@ -292,4 +292,3 @@ If you need help with the bot, please open an issue on GitHub or contact me.
 ---
 
 Made with ❤️ using Next.js and Discord Interactions API
-

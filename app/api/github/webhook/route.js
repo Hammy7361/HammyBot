@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { findGithubWebhook } from "../../../../lib/github/webhooks"
 import { createGithubEventEmbed } from "../../../../lib/github/embeds"
-import { discordRequest } from "../../../../lib/discord/api" 
+import { discordRequest } from "../../../../lib/discord/api"
 import crypto from "crypto"
 import prisma from "../../../../lib/db/prismaClient"
 

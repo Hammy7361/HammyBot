@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server"
+import { cookies } from "next/headers"
 
 // Mark this route as dynamic to prevent static generation
 export const dynamic = "force-dynamic"
@@ -101,17 +102,29 @@ export async function GET(request) {
 
     console.log(`User can manage ${managedGuilds.length} guilds with the bot installed`)
 
-    // Create a query string with the data
-    const queryParams = new URLSearchParams()
-    queryParams.set("user", JSON.stringify(userData))
-    queryParams.set("guilds", JSON.stringify(managedGuilds))
+    // Store auth data in a cookie
+    const authData = {
+      access_token: tokenData.access_token,
+      refresh_token: tokenData.refresh_token,
+      expires_at: Date.now() + tokenData.expires_in * 1000,
+      user: userData,
+      guilds: managedGuilds,
+    }
 
-    // Redirect to the dashboard with the data in the URL
-    return NextResponse.redirect(new URL(`/dashboard/servers?${queryParams.toString()}`, new URL(request.url).origin))
+    // Set the cookie with the auth data
+    cookies().set({
+      name: "discord_auth",
+      value: JSON.stringify(authData),
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      maxAge: tokenData.expires_in,
+      path: "/",
+    })
+
+    // Redirect to the servers page
+    return NextResponse.redirect(new URL("/dashboard/servers", new URL(request.url).origin))
   } catch (error) {
     console.error("Auth callback error:", error)
     return NextResponse.redirect(new URL("/dashboard/login?error=server_error", request.url))
   }
 }
-
-

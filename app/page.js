@@ -6,7 +6,7 @@ export default function Home() {
   const DISCORD_CLIENT_ID = process.env.NEXT_PUBLIC_DISCORD_CLIENT_ID
   const redirectUri =
     process.env.NEXT_PUBLIC_REDIRECT_URI ||
-    `${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000"}/api/auth/callback/discord`
+    `${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000"}/api/discord/bot-added`
   const OAUTH_URL = `https://discord.com/api/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&permissions=8&scope=bot%20applications.commands&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code`
 
   return (
@@ -139,4 +139,3 @@ function CommandCard({ name, description }) {
     </div>
   )
 }
-

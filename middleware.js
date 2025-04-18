@@ -10,4 +10,3 @@ export function middleware(request) {
 export const config = {
   matcher: [], // Empty array means it won't match any paths
 }
-

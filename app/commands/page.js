@@ -122,4 +122,3 @@ function CommandSection({ title, description, commands }) {
     </Card>
   )
 }
-

@@ -32,4 +32,3 @@ export async function GET() {
     return NextResponse.json({ authenticated: false, reason: "invalid" }, { status: 401 })
   }
 }
-

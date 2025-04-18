@@ -5,7 +5,7 @@ import { sendLogMessage, createLogEmbed } from "../../../../lib/discord/logs"
 import { setLoggingChannel, disableLogging, getLoggingChannel } from "../../../../lib/db/loggingChannels"
 import { setGithubWebhook, removeGithubWebhook, listGithubWebhooks } from "../../../../lib/github/webhooks"
 import { addWarning, getWarnings, clearWarnings, clearWarning } from "../../../../lib/db/warnings"
-import { setStarboardConfig, getStarboardConfig, disableStarboard } from "../../../../lib/discord/starboard"
+import { setStarboardConfig, getStarboardConfig, disableStarboard } from "../../../../lib/starboard"
 import {
   getUserPoints,
   setUserPoints,
@@ -16,8 +16,8 @@ import {
   getLeaderboard,
   getPointsByRole,
   canManagePoints,
-} from "../../../../lib/discord/points"
-import { getXpConfig, updateXpConfig, getUserVoiceStats, getUserMediaStats } from "../../../../bot/discord/commands"
+} from "../../../../lib/points"
+import { getXpConfig, updateXpConfig, getUserVoiceStats, getUserMediaStats } from "../../../../bot/commands"
 
 // Interaction type constants
 const PING = 1
